@@ -1,4 +1,4 @@
-package bg.tu_varna.sit.f24621726;
+package bg.tu_varna.sit.f24621726.structure;
 
 import java.util.Date;
 

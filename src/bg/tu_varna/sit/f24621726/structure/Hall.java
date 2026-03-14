@@ -1,10 +1,9 @@
-package bg.tu_varna.sit.f24621726;
+package bg.tu_varna.sit.f24621726.structure;
 
 public class Hall {
     private int number;
     private int NumberOfRows;
     private int seatsPerRow;
-    //matrix of places
 
     public Hall(int seatsPerRow, int numberOfRows, int number) {
         this.seatsPerRow = seatsPerRow;
