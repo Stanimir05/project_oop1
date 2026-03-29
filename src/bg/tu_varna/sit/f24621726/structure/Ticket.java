@@ -11,10 +11,11 @@ public class Ticket {
     private TicketType type;
 
     public Ticket(String code, Seat seat, Event event, TicketType type) {
-        this.code = code;
+
         this.seat = seat;
         this.event = event;
         this.type = type;
+        this.code = generateTicketCode(event,seat,type);
     }
 
     public String getCode() {
@@ -32,17 +33,22 @@ public class Ticket {
     public TicketType getType() {
         return type;
     }
-    //Format: EVENTNAME_DATE_ROW_NUM_TYPE_RANDOM
-    public static String generateTicketCode(Ticket ticket) {
-        String eventName = ticket.getEvent().getName().replaceAll("\\s+", "").toUpperCase();
-        String eventDate = new java.text.SimpleDateFormat("yyyyMMdd").format(ticket.getEvent().getDate());
-        int row = ticket.getSeat().getRow();
-        int num = ticket.getSeat().getNumber();
-        String type = ticket.getType().name().substring(0, 3).toUpperCase();
 
+    public static String generateTicketCode(Event event, Seat seat, TicketType type) {
 
-        int randomSuffix = (int) (Math.random() * 900 + 100);
+        String eventDate = new java.text.SimpleDateFormat("yyyyMMdd")
+                .format(event.getDate());
 
-        return String.format("%s_%s_R%dC%d_%s_%d", eventName, eventDate, row, num, type, randomSuffix);
+        int row = seat.getRow();
+        int num = seat.getNumber();
+
+        String fullType = type.name();
+        String shortType = fullType.length() >= 3 ? fullType.substring(0, 3) : fullType;
+
+        String uuidPart = java.util.UUID.randomUUID()
+                .toString().substring(0, 6).toUpperCase();
+
+        return String.format("%s_R%dC%d_%s_%s",
+                eventDate, row, num, shortType, uuidPart);
     }
 }

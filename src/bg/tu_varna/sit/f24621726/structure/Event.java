@@ -22,7 +22,7 @@ public class Event {
         this.hall = hall;
         tickets = new ArrayList<Ticket>();
 
-        //създавана на матрица с места при инициализация на обекта Event
+        //създавана на матрица с места при инициализация на обекта Event на базата на подадената зала
         seats = new Seat[hall.getNumberOfRows() + 1][hall.getSeatsPerRow() + 1];
 
         for (int i = 1; i <= hall.getNumberOfRows(); i++) {

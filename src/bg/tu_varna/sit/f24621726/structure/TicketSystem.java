@@ -1,11 +1,7 @@
 package bg.tu_varna.sit.f24621726.structure;
 
-import bg.tu_varna.sit.f24621726.structure.exceptions.EventNotFoundException;
-import bg.tu_varna.sit.f24621726.structure.exceptions.InvalidArgumentsException;
-import bg.tu_varna.sit.f24621726.structure.exceptions.InvalidSeatException;
-import bg.tu_varna.sit.f24621726.structure.exceptions.SeatNotAvailableException;
+import bg.tu_varna.sit.f24621726.structure.exceptions.*;
 import bg.tu_varna.sit.f24621726.structure.enums.SeatStatus;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,10 +9,12 @@ import java.util.List;
 public class TicketSystem {
     private ArrayList<Hall> halls;
     private  ArrayList<Event> events;
+    private ArrayList<Ticket> tickets;
 
     public TicketSystem() {
        halls=new ArrayList<Hall>();
        events=new ArrayList<Event>();
+       tickets=new ArrayList<Ticket>();
     }
     public void addHall(Hall hall)
     {
@@ -31,12 +29,10 @@ public class TicketSystem {
     {
         events.add(event);
     }
-
     public void removeEvent(Event event)
     {
         events.remove(event);
     }
-
     //търсене на конкретно събитие по подадени име и дата, ако събитието не е открито връща exception
     public Event findEvent(String name, Date date) throws EventNotFoundException{
         for (Event e : events) {
@@ -93,8 +89,7 @@ public class TicketSystem {
         seatToBook.setNote(note);
     }
 //отмяна на запазването на билет
-    public void unbook(int row,int seat,Date date,String eventName)throws Exception
-    {
+    public void unbook(int row,int seat,Date date,String eventName)throws Exception {
         //открива събитието за отмяна на билета
         Event event=findEvent(eventName,date);
 
@@ -107,8 +102,7 @@ public class TicketSystem {
         seatToUnbook.setStatus(SeatStatus.FREE);
         seatToUnbook.setNote(null);
     }
-    public void buy(int row,int seat,Date date,String eventName)throws Exception
-    {
+    public void buy(int row,int seat,Date date,String eventName)throws Exception {
         //открива събитието за закупуване на билета
         Event event=findEvent(eventName,date);
 
@@ -121,7 +115,6 @@ public class TicketSystem {
         seatToBuy.setStatus(SeatStatus.BOUGHT);
 
     }
-
     public List<Seat> freeSeats(Date date, String eventName) throws EventNotFoundException {
         Event event = findEvent(eventName, date);
         Seat[][] seats = event.getSeats();
@@ -186,5 +179,15 @@ public class TicketSystem {
 
         return seats[row][seat];
     }
+    private Ticket findTicketByCode(String code) throws InvalidCodeException {
+
+        for (Ticket t:tickets)
+        {
+            if(t.getCode()==code){
+                return t;
+            }
+        }
+        throw new InvalidCodeException("Ticket with code "+code+" doesn`t exist");
+}
 
 }
