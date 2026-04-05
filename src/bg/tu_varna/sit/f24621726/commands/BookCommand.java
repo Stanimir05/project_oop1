@@ -7,8 +7,8 @@ import java.util.Date;
 public class BookCommand implements Command {
 
     @Override
-    public boolean matches(String input) {
-        return input.startsWith("book ");
+    public String getName() {
+        return "book";
     }
 
     @Override

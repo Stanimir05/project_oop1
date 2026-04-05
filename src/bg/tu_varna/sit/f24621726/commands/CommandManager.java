@@ -2,26 +2,28 @@ package bg.tu_varna.sit.f24621726.commands;
 
 import bg.tu_varna.sit.f24621726.structure.TicketSystem;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CommandManager {
 
-    private List<Command> commands = new ArrayList<>();
+    private Map<String, Command> commands = new HashMap<>();
 
     public CommandManager() {
-        commands.add(new BookCommand());
-
+        Command bookCommand = new BookCommand();
+        commands.put(bookCommand.getName(), bookCommand);
     }
 
     public void process(String input, TicketSystem system) throws Exception {
-        for (Command cmd : commands) {
-            if (cmd.matches(input)) {
-                cmd.execute(input, system);
-                return;
-            }
-        }
+        String[] parts = input.split(" ");
+        String commandName = parts[0];
 
-        System.out.println("Unknown command!");
+        Command command = commands.get(commandName);
+
+        if (command != null) {
+            command.execute(input, system);
+        } else {
+            System.out.println("Unknown command!");
+        }
     }
 }
