@@ -2,32 +2,49 @@ package bg.tu_varna.sit.f24621726.structure;
 
 import bg.tu_varna.sit.f24621726.structure.exceptions.*;
 import bg.tu_varna.sit.f24621726.structure.enums.SeatStatus;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+
+import java.util.*;
 
 public class TicketSystem {
-    private ArrayList<Hall> halls;
-    private  ArrayList<Event> events;
-    private ArrayList<Ticket> tickets;
+    private Map<Integer, Hall> halls;
+    private List<Event> events;
+    private Map<String, Ticket> tickets;
 
     public TicketSystem() {
-       halls=new ArrayList<Hall>();
-       events=new ArrayList<Event>();
-       tickets=new ArrayList<Ticket>();
+        halls = new HashMap<Integer, Hall>();
+        events = new ArrayList<Event>();
+        tickets = new HashMap<String, Ticket>();
     }
     public void addHall(Hall hall)
     {
-        halls.add(hall);
+        halls.put(hall.getNumber(),hall);
     }
     public void removeHall(Hall hall)
     {
-        halls.remove(hall);
+        halls.remove(hall.getNumber());
     }
+    public Hall findHall(int hallNumber) throws HallNotFoundException {
+        Hall hall = halls.get(hallNumber);
 
-    public void addEvent(Event event)
-    {
-        events.add(event);
+        if (hall == null) {
+            throw new HallNotFoundException("Hall with number " + hallNumber + " not found!");
+        }
+
+        return hall;
+    }
+    public void addEvent(Date date, int hallNumber, String name) throws Exception {
+        Hall hall = findHall(hallNumber);
+
+        for (Event event : events) {
+            if (event.getHall().getNumber() == hallNumber && event.getDate().equals(date)) {
+                throw new InvalidArgumentsException(
+                        "Hall " + hallNumber + " already has an event on " + date + "!"
+                );
+            }
+        }
+
+        Event newEvent = new Event(name, date, hall);
+        events.add(newEvent);
     }
     public void removeEvent(Event event)
     {
@@ -189,5 +206,9 @@ public class TicketSystem {
         }
         throw new InvalidCodeException("Ticket with code "+code+" doesn`t exist");
 }
+    public Seat checkTicket(String code) {
+        Ticket ticket = findTicketByCode(code);
+        return ticket.getSeat();
+    }
 
 }

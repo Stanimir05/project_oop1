@@ -17,8 +17,7 @@ public class Application {
         Event event1 = new Event("Phantom of the opera", new Date(2022, 12, 3), hall1);
         Event event2 = new Event("The Odesy", new Date(2022, 11, 26), hall2);
 
-        ticketSystem.addEvent(event1);
-        ticketSystem.addEvent(event2);
+
 
 //kupuvane na bilet
     }

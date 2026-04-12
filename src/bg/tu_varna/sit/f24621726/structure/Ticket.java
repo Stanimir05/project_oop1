@@ -48,7 +48,7 @@ public class Ticket {
         String uuidPart = java.util.UUID.randomUUID()
                 .toString().substring(0, 6).toUpperCase();
 
-        return String.format("%s_R%dC%d_%s_%s",
+        return String.format("%s_R%dS%d_%s_%s",
                 eventDate, row, num, shortType, uuidPart);
     }
 }
