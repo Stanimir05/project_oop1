@@ -1,14 +1,12 @@
 package bg.tu_varna.sit.f24621726.structure;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
+import java.util.*;
 
 public class Event {
     private String name;
     private Date date;
     private Hall hall;
-    private ArrayList<Ticket> tickets;
+    private Map<String, Ticket> tickets;
     //масив с информация за местата
     private Seat [] [] seats;
 
@@ -20,14 +18,14 @@ public class Event {
         this.name = name;
         this.date = date;
         this.hall = hall;
-        tickets = new ArrayList<Ticket>();
+        tickets = new HashMap<String,Ticket>();
 
         //създавана на матрица с места при инициализация на обекта Event на базата на подадената зала
         seats = new Seat[hall.getNumberOfRows() + 1][hall.getSeatsPerRow() + 1];
 
-        for (int i = 1; i <= hall.getNumberOfRows(); i++) {
-            for (int j = 1; j <= hall.getSeatsPerRow(); j++) {
-                seats[i][j] = new Seat(i, j);
+        for (int i = 0; i <=hall.getNumberOfRows(); i++) {
+            for (int j = 0; j <= hall.getSeatsPerRow(); j++) {
+                seats[i][j] = new Seat(j, i);
             }
         }
     }
@@ -44,11 +42,12 @@ public class Event {
         return hall;
     }
 
-    public ArrayList<Ticket> getTickets() {
+    public Map<String, Ticket> getTickets() {
         return tickets;
     }
+
     public void addTicket(Ticket ticket){
-        tickets.add(ticket);
+        tickets.put(ticket.getCode(),ticket);
 
     }
     public void removeTicket(Ticket ticket)

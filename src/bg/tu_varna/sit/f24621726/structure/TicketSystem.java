@@ -1,19 +1,18 @@
 package bg.tu_varna.sit.f24621726.structure;
 
-import bg.tu_varna.sit.f24621726.structure.exceptions.*;
-import bg.tu_varna.sit.f24621726.structure.enums.SeatStatus;
+import bg.tu_varna.sit.f24621726.exceptions.*;
+import bg.tu_varna.sit.f24621726.enums.SeatStatus;
 
 import java.util.*;
 
 public class TicketSystem {
     private Map<Integer, Hall> halls;
     private List<Event> events;
-    private Map<String, Ticket> tickets;
+
 
     public TicketSystem() {
         halls = new HashMap<Integer, Hall>();
         events = new ArrayList<Event>();
-        tickets = new HashMap<String, Ticket>();
     }
     public void addHall(Hall hall)
     {
@@ -23,20 +22,20 @@ public class TicketSystem {
     {
         halls.remove(hall.getNumber());
     }
-    public Hall findHall(int hallNumber) throws HallNotFoundException {
+    public Hall findHall(int hallNumber) throws NotFoundException {
         Hall hall = halls.get(hallNumber);
-
         if (hall == null) {
-            throw new HallNotFoundException("Hall with number " + hallNumber + " not found!");
+            throw new NotFoundException("Hall with number " + hallNumber + " not found!");
         }
-
         return hall;
     }
     public void addEvent(Date date, int hallNumber, String name) throws Exception {
         Hall hall = findHall(hallNumber);
 
         for (Event event : events) {
-            if (event.getHall().getNumber() == hallNumber && event.getDate().equals(date)) {
+            if (event.getHall().getNumber() == hallNumber
+                    && event.getDate().equals(date)
+                    && event.getName().equals(name)) {
                 throw new InvalidArgumentsException(
                         "Hall " + hallNumber + " already has an event on " + date + "!"
                 );
@@ -51,15 +50,15 @@ public class TicketSystem {
         events.remove(event);
     }
     //търсене на конкретно събитие по подадени име и дата, ако събитието не е открито връща exception
-    public Event findEvent(String name, Date date) throws EventNotFoundException{
+    public Event findEvent(String name, Date date) throws NotFoundException{
         for (Event e : events) {
             if (e.getName().equals(name) && e.getDate().equals(date)) {
                 return e;
             }
         }
-        throw new EventNotFoundException("Event not found!");
+        throw new NotFoundException("Event not found!");
     }
-    public List<Event> findEventsByDate(Date date) throws EventNotFoundException{
+    public List<Event> findEventsByDate(Date date) throws NotFoundException{
         List<Event> eventsByDate = new ArrayList<>();
 
         for (Event e : events) {
@@ -69,13 +68,13 @@ public class TicketSystem {
         }
 
         if (eventsByDate.isEmpty()) {
-            throw new EventNotFoundException("No events found on this date!");
+            throw new NotFoundException("No events found on this date!");
         }
 
         return eventsByDate;
 
     }
-    public List<Event> findEventsByName(String name)throws EventNotFoundException{
+    public List<Event> findEventsByName(String name)throws NotFoundException{
         List<Event> eventsByName = new ArrayList<>();
 
         for (Event e : events) {
@@ -85,7 +84,7 @@ public class TicketSystem {
         }
 
         if (eventsByName.isEmpty()) {
-            throw new EventNotFoundException("No events found with this name!");
+            throw new NotFoundException("No events found with this name!");
         }
 
         return eventsByName;
@@ -100,7 +99,7 @@ public class TicketSystem {
         //проверка дали мястото е свободно
         if (!seatToBook.isFree()) {
             //при несвободно място функцията се прекратява
-            throw new InvalidSeatException("Seat is "+seatToBook.getStatus().toString().toLowerCase()+"!");
+            throw new InvalidArgumentsException("Seat is "+seatToBook.getStatus().toString().toLowerCase()+"!");
         }
         seatToBook.setStatus(SeatStatus.BOOKED);
         seatToBook.setNote(note);
@@ -119,20 +118,19 @@ public class TicketSystem {
         seatToUnbook.setStatus(SeatStatus.FREE);
         seatToUnbook.setNote(null);
     }
-    public void buy(int row,int seat,Date date,String eventName)throws Exception {
-        //открива събитието за закупуване на билета
-        Event event=findEvent(eventName,date);
-
-        Seat seatToBuy=findSeat(event,row,seat);
-        if(seatToBuy.isBought())
-        {
+    public Ticket buy(int row, int seat, Date date, String eventName) throws Exception {
+        Event event = findEvent(eventName, date);
+        Seat seatToBuy = findSeat(event, row, seat);
+        if (seatToBuy.isBought()) {
             throw new SeatNotAvailableException("Seat is already bought!");
         }
-
         seatToBuy.setStatus(SeatStatus.BOUGHT);
-
+        seatToBuy.setNote(null);
+        Ticket ticket = new Ticket(seatToBuy, event);
+        event.getTickets().put(ticket.getCode(), ticket);
+        return ticket;
     }
-    public List<Seat> freeSeats(Date date, String eventName) throws EventNotFoundException {
+    public List<Seat> freeSeats(Date date, String eventName) {
         Event event = findEvent(eventName, date);
         Seat[][] seats = event.getSeats();
         List<Seat> freeSeats = new ArrayList<>();
@@ -185,30 +183,58 @@ public class TicketSystem {
     }
     //намира съответното място, при място извън обсега връща грешка
     //private, защото ще се използва само в този клас
-    private Seat findSeat(Event event, int row, int seat) throws InvalidSeatException {
+    public Seat findSeat(Event event, int row, int seat) throws InvalidArgumentsException {
 
         Seat[][] seats = event.getSeats();
 
         if (row < 0 || row >= seats.length ||
                 seat < 0 || seat >= seats[row].length) {
-            throw new InvalidSeatException("Seat position is out of bounds");
+            throw new InvalidArgumentsException("Seat position is out of bounds");
         }
 
         return seats[row][seat];
     }
-    private Ticket findTicketByCode(String code) throws InvalidCodeException {
+    public Ticket findTicketByCode(String code) throws InvalidArgumentsException {
+        for (Event e : events) {
+            if (e.getTickets() != null) {
+                Ticket ticket = e.getTickets().get(code);
 
-        for (Ticket t:tickets)
-        {
-            if(t.getCode()==code){
-                return t;
+                if (ticket != null) {
+                    return ticket;
+                }
             }
         }
-        throw new InvalidCodeException("Ticket with code "+code+" doesn`t exist");
-}
+
+        throw new InvalidArgumentsException("Ticket with such code doesn't exist");
+    }
     public Seat checkTicket(String code) {
         Ticket ticket = findTicketByCode(code);
         return ticket.getSeat();
+    }
+    public Map<Event, Integer> report(Date from, Date to, Integer hallNumber) {
+        Map<Event, Integer> result = new LinkedHashMap<>();
+
+        for (Event event : events) {
+            Date eventDate = event.getDate();
+
+            boolean inRange = !eventDate.before(from) && !eventDate.after(to);
+            boolean hallMatches = (hallNumber == null ||
+                    event.getHall().getNumber() == hallNumber);
+
+            if (inRange && hallMatches) {
+                int soldCount = 0;
+
+                for (Ticket ticket : event.getTickets().values()) {
+                    if (ticket.getSeat().isBought()) {
+                        soldCount++;
+                    }
+                }
+
+                result.put(event, soldCount);
+            }
+        }
+
+        return result;
     }
 
 }

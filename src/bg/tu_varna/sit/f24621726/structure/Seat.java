@@ -1,6 +1,6 @@
 package bg.tu_varna.sit.f24621726.structure;
 
-import bg.tu_varna.sit.f24621726.structure.enums.SeatStatus;
+import bg.tu_varna.sit.f24621726.enums.SeatStatus;
 
 public class Seat {
     private int number;
