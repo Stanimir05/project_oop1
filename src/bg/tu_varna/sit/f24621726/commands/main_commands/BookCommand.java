@@ -1,5 +1,7 @@
-package bg.tu_varna.sit.f24621726.commands;
+package bg.tu_varna.sit.f24621726.commands.main_commands;
 
+import bg.tu_varna.sit.f24621726.commands.comand_manager.Command;
+import bg.tu_varna.sit.f24621726.enums.CommandType;
 import bg.tu_varna.sit.f24621726.structure.TicketSystem;
 
 import java.util.Date;
@@ -8,14 +10,14 @@ import java.util.List;
 public class BookCommand extends Command {
 
     public BookCommand() {
-        super("book", "book <row> <seat> <date> <name> \"[note]\"",
+        super("book", "book <row> <seat> <date> \"<name>\" \"[note]\"",
                 "Saves a ticket for event <name> on date <date> on row <row> \n" +
-                        "and seat <seat> and adds an optional note \"[note]\".");
+                        "and seat <seat> and adds an optional note \"[note]\".", CommandType.MAIN);
     }
 
     @Override
     public void execute(List<String> args, TicketSystem system) throws Exception {
-        validateArgs(args, 5,5);
+        validateArgs(args, 5,6);
 
         int row = Integer.parseInt(args.get(1));
         int seat = Integer.parseInt(args.get(2));

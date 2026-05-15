@@ -1,28 +1,23 @@
 package bg.tu_varna.sit.f24621726.structure;
 
-import bg.tu_varna.sit.f24621726.enums.TicketType;
+
 
 public class Ticket {
     private String code;
     private Seat seat;
-    private Event event;
-
-
-    public Ticket( Seat seat, Event event) {
-
+    public Ticket(Seat seat,Event event) {
         this.seat = seat;
-        this.event = event;
         this.code = generateTicketCode(event,seat);
-        event.addTicket(this);
     }
-
+    //конструктор за зареждане на Билет от файла, чийто код е вече генериран
+    public Ticket(String code, Seat seat) {
+        this.code = code;
+        this.seat = seat;
+    }
     public String getCode() {
         return code;
     }
 
-    public Event getEvent() {
-        return event;
-    }
 
     public Seat getSeat() {
         return seat;
@@ -37,5 +32,12 @@ public class Ticket {
                 .toString().substring(0, 6).toUpperCase();
         return String.format("%s_R%dS%d_%s",
                 eventDate, row, num,  uuidPart);
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket" +
+                "code='" + code + '\'' +
+                ", seat=" + seat ;
     }
 }

@@ -5,10 +5,19 @@ public class Hall {
     private int NumberOfRows;
     private int seatsPerRow;
 
-    public Hall(int seatsPerRow, int numberOfRows, int number) {
+    public Hall( int number,int seatsPerRow, int numberOfRows) {
+        this.number = number;
         this.seatsPerRow = seatsPerRow;
         NumberOfRows = numberOfRows;
-        this.number = number;
+
+    }
+
+    @Override
+    public String toString() {
+        return "Hall " +
+                number +
+                ", Number of rows=" + NumberOfRows +
+                ", seats per row=" + seatsPerRow ;
     }
 
     public int getNumber() {

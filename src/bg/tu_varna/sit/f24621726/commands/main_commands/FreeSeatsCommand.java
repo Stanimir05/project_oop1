@@ -1,5 +1,7 @@
-package bg.tu_varna.sit.f24621726.commands;
+package bg.tu_varna.sit.f24621726.commands.main_commands;
 
+import bg.tu_varna.sit.f24621726.commands.comand_manager.Command;
+import bg.tu_varna.sit.f24621726.enums.CommandType;
 import bg.tu_varna.sit.f24621726.structure.Seat;
 import bg.tu_varna.sit.f24621726.structure.TicketSystem;
 
@@ -11,7 +13,7 @@ public class FreeSeatsCommand extends Command {
     public FreeSeatsCommand() {
         super("freeseats", "freeseats <date> <name>",
                 "Outputs information about available seats for event with name <name>\n" +
-                        "and on date <date>.");
+                        "and on date <date>.", CommandType.MAIN);
     }
 
     @Override
@@ -28,9 +30,16 @@ public class FreeSeatsCommand extends Command {
             return;
         }
 
-        for (Seat s : freeSeats) {
-            System.out.println("Row: " + s.getRow() + " Seat: " + s.getNumber());
+        int currentRow = -1;
+
+        for (Seat seat : freeSeats) {
+            if (seat.getRow() != currentRow) {
+                currentRow = seat.getRow();
+                System.out.print("\nRow " + currentRow + ": ");
+            }
+            System.out.print(seat.getNumber() + " ");
         }
+        System.out.println();
     }
 
 

@@ -1,5 +1,7 @@
-package bg.tu_varna.sit.f24621726.commands;
+package bg.tu_varna.sit.f24621726.commands.main_commands;
 
+import bg.tu_varna.sit.f24621726.commands.comand_manager.Command;
+import bg.tu_varna.sit.f24621726.enums.CommandType;
 import bg.tu_varna.sit.f24621726.structure.Ticket;
 import bg.tu_varna.sit.f24621726.structure.TicketSystem;
 
@@ -10,7 +12,7 @@ public class BuyCommand extends Command {
 
     public BuyCommand() {
         super("buy", "buy <row> <seat> <date> \"<name>\"","" +
-                "Buys a ticket for event with name <name> on date <date>, row <row> and seat <seat>.");
+                "Buys a ticket for event with name <name> on date <date>, row <row> and seat <seat>.", CommandType.MAIN);
     }
 
     @Override

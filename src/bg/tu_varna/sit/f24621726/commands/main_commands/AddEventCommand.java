@@ -1,14 +1,16 @@
-package bg.tu_varna.sit.f24621726.commands;
+package bg.tu_varna.sit.f24621726.commands.main_commands;
 
+import bg.tu_varna.sit.f24621726.commands.comand_manager.Command;
+import bg.tu_varna.sit.f24621726.enums.CommandType;
 import bg.tu_varna.sit.f24621726.structure.TicketSystem;
 
 import java.util.Date;
 import java.util.List;
 
-public class AddEventCommand extends Command{
+public class AddEventCommand extends Command {
     public AddEventCommand() {
-        super("addevent", "addevent <date> <hall> <name>",
-                "Adds a new event on date <date> with a name <name> in hall with a number <hall.");
+        super("addevent", "addevent <date> <hall> \"<name>\"",
+                "Adds a new event on date <date> with a name <name> in hall with a number <hall.", CommandType.MAIN);
     }
 
     @Override

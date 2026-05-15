@@ -1,5 +1,7 @@
-package bg.tu_varna.sit.f24621726.commands;
+package bg.tu_varna.sit.f24621726.commands.main_commands;
 
+import bg.tu_varna.sit.f24621726.commands.comand_manager.Command;
+import bg.tu_varna.sit.f24621726.enums.CommandType;
 import bg.tu_varna.sit.f24621726.structure.Seat;
 import bg.tu_varna.sit.f24621726.structure.TicketSystem;
 
@@ -12,7 +14,7 @@ public class BookingsCommand extends Command {
         super("bookings", "bookings [<date>] [<eventName>]",
                 "Outputs information about booked but not bought tickets for event with name <name>\n" +
                         "on date <date>. If <name> is missing it outputs information about all events on <date>.\n" +
-                        "If <date> is missing it outputs information about all dates for that event.");
+                        "If <date> is missing it outputs information about all dates for that event.", CommandType.MAIN);
 
     }
 

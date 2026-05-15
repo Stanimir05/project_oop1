@@ -1,5 +1,7 @@
-package bg.tu_varna.sit.f24621726.commands;
+package bg.tu_varna.sit.f24621726.commands.main_commands;
 
+import bg.tu_varna.sit.f24621726.commands.comand_manager.Command;
+import bg.tu_varna.sit.f24621726.enums.CommandType;
 import bg.tu_varna.sit.f24621726.structure.Seat;
 import bg.tu_varna.sit.f24621726.structure.TicketSystem;
 
@@ -9,7 +11,7 @@ public class CheckCommand extends Command {
 
     public CheckCommand() {
         super("check", "check <code>",
-                "Checks the validity of a ticket by the imputed <code>");
+                "Checks the validity of a ticket by the imputed <code>", CommandType.MAIN);
     }
 
     @Override

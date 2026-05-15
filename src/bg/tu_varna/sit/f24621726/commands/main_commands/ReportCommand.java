@@ -1,5 +1,7 @@
-package bg.tu_varna.sit.f24621726.commands;
+package bg.tu_varna.sit.f24621726.commands.main_commands;
 
+import bg.tu_varna.sit.f24621726.commands.comand_manager.Command;
+import bg.tu_varna.sit.f24621726.enums.CommandType;
 import bg.tu_varna.sit.f24621726.structure.Event;
 import bg.tu_varna.sit.f24621726.structure.TicketSystem;
 
@@ -12,7 +14,7 @@ public class ReportCommand extends Command {
 
     public ReportCommand() {
         super("report", "report <from> <to> [hall]",
-                "Outputs information about bought tickets form <from> date to <to> date");
+                "Outputs information about bought tickets form <from> date to <to> date", CommandType.MAIN);
     }
 
 
@@ -40,7 +42,7 @@ public class ReportCommand extends Command {
             int count = entry.getValue();
 
             System.out.println(
-                    "Hall: " + event.getHall().getNumber()
+                    "Hall: " + event.getHallNumber()
                             + " | Event: " + event.getName()
                             + " | Date: " + event.getDate()
                             + " | Sold tickets: " + count

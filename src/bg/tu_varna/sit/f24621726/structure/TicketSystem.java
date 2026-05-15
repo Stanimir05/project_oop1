@@ -2,13 +2,20 @@ package bg.tu_varna.sit.f24621726.structure;
 
 import bg.tu_varna.sit.f24621726.exceptions.*;
 import bg.tu_varna.sit.f24621726.enums.SeatStatus;
-
+import java.util.Comparator;
 import java.util.*;
 
 public class TicketSystem {
     private Map<Integer, Hall> halls;
     private List<Event> events;
 
+    public Map<Integer, Hall> getHalls() {
+        return halls;
+    }
+
+    public List<Event> getEvents() {
+        return events;
+    }
 
     public TicketSystem() {
         halls = new HashMap<Integer, Hall>();
@@ -18,6 +25,7 @@ public class TicketSystem {
     {
         halls.put(hall.getNumber(),hall);
     }
+
     public void removeHall(Hall hall)
     {
         halls.remove(hall.getNumber());
@@ -33,7 +41,7 @@ public class TicketSystem {
         Hall hall = findHall(hallNumber);
 
         for (Event event : events) {
-            if (event.getHall().getNumber() == hallNumber
+            if (event.getHallNumber()== hallNumber
                     && event.getDate().equals(date)
                     && event.getName().equals(name)) {
                 throw new InvalidArgumentsException(
@@ -44,6 +52,81 @@ public class TicketSystem {
 
         Event newEvent = new Event(name, date, hall);
         events.add(newEvent);
+    }
+    public void clear(){
+        events.clear();
+        halls.clear();
+    }
+    public void loadDefaultData() throws Exception {
+
+        // HALLS
+        addHall(new Hall(1, 12, 14));
+        addHall(new Hall(2, 10, 12));
+        addHall(new Hall(3, 8, 10));
+        addHall(new Hall(4, 15, 20));
+        addHall(new Hall(5, 6, 8));
+
+        // DATES
+        Date date1 = java.sql.Date.valueOf("2026-06-10");
+        Date date2 = java.sql.Date.valueOf("2026-06-12");
+        Date date3 = java.sql.Date.valueOf("2026-06-15");
+        Date date4 = java.sql.Date.valueOf("2026-06-18");
+        Date date5 = java.sql.Date.valueOf("2026-06-20");
+        Date date6 = java.sql.Date.valueOf("2026-06-22");
+
+        // EVENTS
+        addEvent(date1, 1, "Rock Festival");
+        addEvent(date2, 2, "Jazz Night");
+        addEvent(date3, 3, "Movie Premiere");
+        addEvent(date4, 4, "Stand Up Comedy");
+        addEvent(date5, 5, "Classical Concert");
+        addEvent(date6, 1, "Tech Conference");
+
+        // BOOKINGS
+        book(2, 5, date1, "Rock Festival", "Reserved for sponsors");
+        book(3, 7, date1, "Rock Festival", "VIP guest");
+
+        book(1, 1, date2, "Jazz Night", "Front row reservation");
+        book(2, 4, date2, "Jazz Night", "Reserved");
+
+        book(4, 2, date3, "Movie Premiere", "Press seat");
+        book(5, 5, date3, "Movie Premiere", "Special guest");
+
+        book(6, 10, date4, "Stand Up Comedy", "Organizer");
+        book(7, 12, date4, "Stand Up Comedy", "VIP");
+
+        // PURCHASED TICKETS - ROCK FESTIVAL
+        buy(1, 1, date1, "Rock Festival");
+        buy(1, 2, date1, "Rock Festival");
+        buy(1, 3, date1, "Rock Festival");
+        buy(2, 1, date1, "Rock Festival");
+        buy(2, 2, date1, "Rock Festival");
+        buy(5, 10, date1, "Rock Festival");
+
+        // PURCHASED TICKETS - JAZZ NIGHT
+        buy(3, 3, date2, "Jazz Night");
+        buy(3, 4, date2, "Jazz Night");
+        buy(4, 5, date2, "Jazz Night");
+
+        // PURCHASED TICKETS - MOVIE PREMIERE
+        buy(1, 1, date3, "Movie Premiere");
+        buy(1, 2, date3, "Movie Premiere");
+        buy(1, 3, date3, "Movie Premiere");
+        buy(2, 1, date3, "Movie Premiere");
+        buy(2, 2, date3, "Movie Premiere");
+        buy(2, 3, date3, "Movie Premiere");
+        buy(3, 1, date3, "Movie Premiere");
+        buy(3, 2, date3, "Movie Premiere");
+
+        // PURCHASED TICKETS - STAND UP COMEDY
+        buy(10, 10, date4, "Stand Up Comedy");
+        buy(10, 11, date4, "Stand Up Comedy");
+
+        // PURCHASED TICKETS - CLASSICAL CONCERT
+        buy(1, 1, date5, "Classical Concert");
+
+        // TECH CONFERENCE intentionally undersold
+        buy(1, 1, date6, "Tech Conference");
     }
     public void removeEvent(Event event)
     {
@@ -219,7 +302,7 @@ public class TicketSystem {
 
             boolean inRange = !eventDate.before(from) && !eventDate.after(to);
             boolean hallMatches = (hallNumber == null ||
-                    event.getHall().getNumber() == hallNumber);
+                    event.getHallNumber()== hallNumber);
 
             if (inRange && hallMatches) {
                 int soldCount = 0;
@@ -236,5 +319,72 @@ public class TicketSystem {
 
         return result;
     }
+    public String displayEvents(List<Event> events){
+        StringBuilder result= new StringBuilder();
+        for(Event e:events)
+        {
+            result.append(e.toString()).append("\n\n");
+        }
+        return result.toString().trim();
+}
+    public String displayHalls(){
+    StringBuilder result= new StringBuilder();
+    for(Hall h:halls.values())
+    {
+        result.append(h.toString()).append("\n");
+    }
+    return result.toString().trim();
+}
+    public List<Event> findEventsByHallNumber(int hallNumber){
+        List<Event> result=new ArrayList<>();
+        for(Event e:events)
+        {
+            if(e.getHallNumber()==hallNumber)
+            {
+                result.add(e);
+            }
+        }
+        return result;
+}
+    public List<Event> topEvents() {
 
+        List<Event> sortedEvents = new ArrayList<>(events);
+
+        Collections.sort(sortedEvents, (e1, e2) -> Integer.compare(
+                e2.getTickets().size(),
+                e1.getTickets().size()
+        ));
+
+        if (sortedEvents.size() > 10) {
+            return sortedEvents.subList(0, 10);
+        }
+
+        return sortedEvents;
+    }
+    public List<Event> eventsUnderPercent(int percent) {
+
+        List<Event> result = new ArrayList<>();
+
+        for (Event event : events) {
+
+            int soldTickets = event.getTickets().size();
+
+            int totalSeats = event.getTotalSeats();
+
+            double percentage =
+                    (soldTickets * 100.0) / totalSeats;
+
+            if (percentage < percent) {
+                result.add(event);
+            }
+        }
+
+        return result;
+    }
+    public void removeEventsByList(List<Event> eventsToRemove) {
+
+        for (Event eventToRemove : eventsToRemove) {
+            events.remove(eventToRemove);
+        }
+    }
 }
