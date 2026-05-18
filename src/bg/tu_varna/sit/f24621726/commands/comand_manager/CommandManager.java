@@ -9,16 +9,41 @@ import bg.tu_varna.sit.f24621726.commands.file_commands.OpenCommand;
 import bg.tu_varna.sit.f24621726.commands.file_commands.SaveCommand;
 import bg.tu_varna.sit.f24621726.commands.file_commands.SaveasCommand;
 import bg.tu_varna.sit.f24621726.commands.main_commands.*;
+import bg.tu_varna.sit.f24621726.exceptions.AccessDeniedException;
+import bg.tu_varna.sit.f24621726.exceptions.InvalidArgumentsException;
+import bg.tu_varna.sit.f24621726.exceptions.NotFoundException;
 import bg.tu_varna.sit.f24621726.files.FileSystem;
 import bg.tu_varna.sit.f24621726.structure.TicketSystem;
 
 import java.rmi.registry.Registry;
 import java.util.*;
-
+/**
+ * Клас, който управлява всички потребителски команди.
+ *
+ * Отговаря за:
+ * - регистриране на командите
+ * - разпознаване на въведена команда
+ * - разделяне на входа на аргументи
+ * - проверка за отворен файл
+ * - изпълнение на съответната команда
+ * - централизирана обработка на грешки
+ */
 public class CommandManager {
+    /**
+     * Обект за работа с файловата система.
+     */
     private FileSystem fileSystem = new FileSystem();
+    /**
+     * Колекция с всички налични команди.
+     *
+     * Ключът е името на командата,
+     * а стойността е обектът команда.
+     */
     private Map<String, Command> commands = new HashMap<>();
-
+    /**
+     * Създава CommandManager и регистрира
+     * всички команди в системата.
+     */
     public CommandManager() {
         register(new BookCommand());
         register(new AddEventCommand());
@@ -45,29 +70,39 @@ public class CommandManager {
     private void register(Command command) {
         commands.put(command.getName().toLowerCase(), command);
     }
-
+    /**
+     * Обработва потребителски вход.
+     *
+     * Методът:
+     * - разделя входа на аргументи
+     * - намира съответната команда
+     * - проверява дали файл е отворен
+     * - изпълнява командата
+     * - прихваща и извежда грешки
+     *
+     * @param input въведеният текст от потребителя
+     * @param system системата за билети
+     */
     public void process(String input, TicketSystem system) {
         try {
             List<String> args = tokenize(input);
             System.out.flush();
             if (args.isEmpty()) {
-                System.out.println("No arguments given!");
-                return;
+                throw new InvalidArgumentsException("No arguments!");
             }
 
             String commandName = args.get(0).toLowerCase();
             Command command = commands.get(commandName);
 
             if (command == null) {
-                System.out.println("Unknown command!");
-                return;
+                    throw new NotFoundException("Unknown command!");
             }
 
             if (!command.getName().equals("open")
                     && !command.getName().equals("help")
                     && !fileSystem.isOpened()) {
-                System.out.println("No file is opened. Use open first.");
-                return;
+                throw new AccessDeniedException("No access to commands! Use open first!");
+
             }
 
             command.execute(args, system);
@@ -76,7 +111,24 @@ public class CommandManager {
             System.out.println("Error: " + e.getMessage());
         }
     }
-
+    /**
+     * Разделя входния текст на аргументи.
+     *
+     * Поддържа аргументи в кавички,
+     * за да могат имена и бележки
+     * да съдържат интервали.
+     *
+     * Пример:
+     * book 1 2 2026-06-10 "Rock Festival" "VIP guest"
+     *
+     * се преобразува до:
+     * [book, 1, 2, 2026-06-10, Rock Festival, VIP guest]
+     *
+     * @param input въведеният текст
+     * @return списък с аргументи
+     * @throws IllegalArgumentException
+     *         ако кавичките не са затворени
+     */
     private List<String> tokenize(String input) {
         List<String> tokens = new ArrayList<>();
 
@@ -111,7 +163,7 @@ public class CommandManager {
             tokens.add(current.toString());
         }
 
-        // незатяорени кавички
+        // незатворени кавички
         if (insideQuotes) {
             throw new IllegalArgumentException("Unclosed quotes in command.");
         }

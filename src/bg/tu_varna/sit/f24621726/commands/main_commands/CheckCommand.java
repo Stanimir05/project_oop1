@@ -6,7 +6,13 @@ import bg.tu_varna.sit.f24621726.structure.Seat;
 import bg.tu_varna.sit.f24621726.structure.TicketSystem;
 
 import java.util.List;
-
+/**
+ * Команда за проверка на билет.
+ *
+ * Командата проверява
+ * дали билет с даден код съществува
+ * и е валиден.
+ */
 public class CheckCommand extends Command {
 
     public CheckCommand() {

@@ -6,7 +6,14 @@ import bg.tu_varna.sit.f24621726.files.FileSystem;
 import bg.tu_varna.sit.f24621726.structure.TicketSystem;
 
 import java.util.List;
-
+/**
+ * Команда за записване на данните
+ * в текущо отворения файл.
+ *
+ * Командата използва FileSystem,
+ * за да запази текущото състояние
+ * на системата.
+ */
 public class SaveCommand extends Command {
     private FileSystem fileSystem;
 

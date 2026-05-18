@@ -6,10 +6,21 @@ import bg.tu_varna.sit.f24621726.files.FileSystem;
 import bg.tu_varna.sit.f24621726.structure.TicketSystem;
 
 import java.util.List;
-
+/**
+ * Команда за записване на данните
+ * в избран файл.
+ *
+ * Командата използва FileSystem,
+ * за да запише:
+ * - зали
+ * - събития
+ * - билети
+ * - статуси на места
+ *
+ * в нов файл или нова локация.
+ */
 public class SaveasCommand extends Command {
     private FileSystem fileSystem;
-
     public SaveasCommand(FileSystem fileSystem) {
         super("saveas", "saveas <filepath>", "Saves current file in a desired location",CommandType.FILE);
         this.fileSystem = fileSystem;

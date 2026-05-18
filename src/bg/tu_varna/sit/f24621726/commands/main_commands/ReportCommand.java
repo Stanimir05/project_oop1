@@ -8,7 +8,17 @@ import bg.tu_varna.sit.f24621726.structure.TicketSystem;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
+/**
+ * Команда за генериране на справка
+ * за продадени билети.
+ *
+ * Командата извежда информация
+ * за продадените билети
+ * в зададен период.
+ *
+ * Позволява и филтриране
+ * по номер на зала.
+ */
 public class ReportCommand extends Command {
 
 

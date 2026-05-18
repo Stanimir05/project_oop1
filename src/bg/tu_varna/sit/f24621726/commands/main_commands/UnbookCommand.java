@@ -6,7 +6,13 @@ import bg.tu_varna.sit.f24621726.structure.TicketSystem;
 
 import java.util.Date;
 import java.util.List;
-
+/**
+ * Команда за отмяна на резервация.
+ *
+ * Командата премахва резервация
+ * за конкретно място
+ * на определено събитие.
+ */
 public class UnbookCommand extends Command {
 
     public UnbookCommand() {

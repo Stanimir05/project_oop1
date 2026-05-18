@@ -7,7 +7,15 @@ import bg.tu_varna.sit.f24621726.structure.TicketSystem;
 
 import java.util.Date;
 import java.util.List;
-
+/**
+ * Команда за извеждане
+ * на свободните места за събитие.
+ *
+ * Командата показва всички
+ * незаети места за:
+ * - определена дата
+ * - определено събитие
+ */
 public class FreeSeatsCommand extends Command {
 
     public FreeSeatsCommand() {

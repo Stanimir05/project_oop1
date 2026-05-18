@@ -6,7 +6,19 @@ import bg.tu_varna.sit.f24621726.structure.TicketSystem;
 
 import java.util.Date;
 import java.util.List;
-
+/**
+ * Команда за резервиране на място за събитие.
+ *
+ * Командата резервира място
+ * по:
+ * - ред
+ * - номер на място
+ * - дата
+ * - име на събитие
+ *
+ * Поддържа и добавяне
+ * на допълнителна бележка.
+ */
 public class BookCommand extends Command {
 
     public BookCommand() {

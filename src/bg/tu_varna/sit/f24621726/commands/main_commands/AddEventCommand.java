@@ -6,7 +6,15 @@ import bg.tu_varna.sit.f24621726.structure.TicketSystem;
 
 import java.util.Date;
 import java.util.List;
-
+/**
+ * Команда за добавяне на ново събитие.
+ *
+ * Командата създава събитие
+ * с:
+ * - дата
+ * - зала
+ * - име
+ */
 public class AddEventCommand extends Command {
     public AddEventCommand() {
         super("addevent", "addevent <date> <hall> \"<name>\"",

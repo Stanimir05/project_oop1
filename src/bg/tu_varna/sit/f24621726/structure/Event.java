@@ -3,14 +3,57 @@ package bg.tu_varna.sit.f24621726.structure;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * Клас, описващ събитие в системата.
+ *
+ * Всяко събитие съдържа:
+ * - име
+ * - дата
+ * - номер на зала
+ * - списък с билети
+ * - матрица с места
+ *
+ * Класът управлява информацията
+ * за местата и билетите на събитието.
+ */
 public class Event {
+    /**
+     * Име на събитието.
+     */
     private String name;
+    /**
+     * Дата на събитието.
+     */
     private Date date;
+    /**
+     * Номер на залата,
+     * в която се провежда събитието.
+     */
     private int hallNumber;
+    /**
+     * Списък с билетите за събитието.
+     *
+     * Ключът е кодът на билета.
+     */
     private Map<String, Ticket> tickets;
+    /**
+     * Матрица с местата за събитието.
+     */
     private Seat[][] seats;
-
+    /**
+     * Създава ново събитие.
+     *
+     * Инициализира:
+     * - информацията за събитието
+     * - списъка с билети
+     * - матрицата с места
+     *
+     * Всички места първоначално са свободни.
+     *
+     * @param name име на събитието
+     * @param date дата на събитието
+     * @param hall залата за събитието
+     */
     public Event(String name, Date date, Hall hall) {
         this.name = name;
         this.date = date;
@@ -65,12 +108,13 @@ public class Event {
     public void addTicket(Ticket ticket) {
         tickets.put(ticket.getCode(), ticket);
     }
-
-    public void removeTicket(Ticket ticket) {
-        tickets.remove(ticket.getCode());
-    }
+    /**
+     * Изчислява общия брой места
+     * в събитието.
+     *
+     * @return общ брой места
+     */
     public int getTotalSeats() {
-
         return (seats.length - 1) *
                 (seats[0].length - 1);
     }

@@ -1,8 +1,24 @@
 package bg.tu_varna.sit.f24621726.structure;
-
+/**
+ * Клас, описващ зала за провеждане на събития.
+ *
+ * Всяка зала съдържа:
+ * - уникален номер
+ * - брой редове
+ * - брой места на ред
+ */
 public class Hall {
+    /**
+     * Уникален номер на залата.
+     */
     private int number;
+    /**
+     * Брой редове в залата.
+     */
     private int NumberOfRows;
+    /**
+     * Брой места на всеки ред.
+     */
     private int seatsPerRow;
 
     public Hall( int number,int seatsPerRow, int numberOfRows) {

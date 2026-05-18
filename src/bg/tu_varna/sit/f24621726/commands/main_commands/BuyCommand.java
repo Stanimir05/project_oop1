@@ -7,7 +7,16 @@ import bg.tu_varna.sit.f24621726.structure.TicketSystem;
 
 import java.util.Date;
 import java.util.List;
-
+/**
+ * Команда за закупуване на билет.
+ *
+ * Командата закупува билет
+ * за конкретно място
+ * на определено събитие.
+ *
+ * При успешно закупуване
+ * се генерира уникален код на билет.
+ */
 public class BuyCommand extends Command {
 
     public BuyCommand() {

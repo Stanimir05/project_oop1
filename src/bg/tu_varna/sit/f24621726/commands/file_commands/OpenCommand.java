@@ -6,7 +6,17 @@
     import bg.tu_varna.sit.f24621726.structure.TicketSystem;
 
     import java.util.List;
-
+    /**
+     * Команда за отваряне на файл.
+     *
+     * Командата зарежда данните от файл
+     * чрез класа FileSystem.
+     *
+     * След успешно отваряне:
+     * - се зареждат залите
+     * - се зареждат събитията
+     * - системата се маркира като отворена
+     */
     public class OpenCommand extends Command {
         private FileSystem fileSystem;
 

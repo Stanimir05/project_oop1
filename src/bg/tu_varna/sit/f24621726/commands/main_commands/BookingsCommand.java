@@ -7,7 +7,15 @@ import bg.tu_varna.sit.f24621726.structure.TicketSystem;
 
 import java.util.Date;
 import java.util.List;
-
+/**
+ * Команда за извеждане на резервирани,
+ * но незакупени места.
+ *
+ * Командата позволява:
+ * - търсене по дата
+ * - търсене по име на събитие
+ * - комбинирано търсене
+ */
 public class BookingsCommand extends Command {
 
     public BookingsCommand() {

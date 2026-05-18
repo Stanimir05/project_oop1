@@ -1,11 +1,36 @@
 package bg.tu_varna.sit.f24621726.structure;
 
 import bg.tu_varna.sit.f24621726.enums.SeatStatus;
-
+/**
+ * Клас, описващ място в зала.
+ *
+ * Всяко място съдържа:
+ * - номер на мястото
+ * - ред
+ * - статус
+ * - бележка
+ *
+ * Статусът определя дали мястото е:
+ * - свободно
+ * - резервирано
+ * - закупено
+ */
 public class Seat {
+    /**
+     * Номер на мястото.
+     */
     private int number;
+    /**
+     * Номер на реда.
+     */
     private int row;
+    /**
+     * Текущ статус на мястото.
+     */
     private SeatStatus status;
+    /**
+     * Допълнителна бележка към мястото.
+     */
     private String note;
 
     public String getNote() {
