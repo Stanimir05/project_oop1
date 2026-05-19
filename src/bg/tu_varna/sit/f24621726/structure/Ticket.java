@@ -24,6 +24,11 @@ public class Ticket {
      * @param event събитието, за което е билетът
      */
     private Seat seat;
+
+    public Ticket(Seat seat,Event event) {
+        this.seat = seat;
+        this.code = generateTicketCode(event,seat);
+    }
     /**
      * Създава билет с вече съществуващ код.
      *
@@ -32,11 +37,6 @@ public class Ticket {
      * @param code код на билета
      * @param seat мястото за билета
      */
-    public Ticket(Seat seat,Event event) {
-        this.seat = seat;
-        this.code = generateTicketCode(event,seat);
-    }
-    //конструктор за зареждане на Билет от файла, чийто код е вече генериран
     public Ticket(String code, Seat seat) {
         this.code = code;
         this.seat = seat;

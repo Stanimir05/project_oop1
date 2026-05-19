@@ -78,9 +78,7 @@ public class FileSystem {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             loadEvents(reader, system);
         }
-        if (system.getEvents().isEmpty() && system.getHalls().isEmpty()) {
-            system.loadDefaultData();
-        }
+
         currentFilePath = filePath;
         opened = true;
     }

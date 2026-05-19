@@ -233,7 +233,7 @@ public class TicketSystem {
  *
  * @param name име на събитието
  * @return списък със събития
- * @t
+
  * */
     public List<Event> findEventsByName(String name)throws NotFoundException{
         List<Event> eventsByName = new ArrayList<>();

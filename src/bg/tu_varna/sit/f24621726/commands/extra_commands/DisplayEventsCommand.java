@@ -2,6 +2,7 @@ package bg.tu_varna.sit.f24621726.commands.extra_commands;
 
 import bg.tu_varna.sit.f24621726.commands.comand_manager.Command;
 import bg.tu_varna.sit.f24621726.enums.CommandType;
+import bg.tu_varna.sit.f24621726.exceptions.NotFoundException;
 import bg.tu_varna.sit.f24621726.structure.TicketSystem;
 
 import java.util.List;
@@ -23,8 +24,7 @@ public class DisplayEventsCommand extends Command {
             result = system.displayEvents(system.getEvents());
 
             if (result.isEmpty()) {
-                System.out.println("No events in the system");
-                return;
+                throw new NotFoundException("No events in the system");
             }
 
             System.out.println(result);
@@ -36,8 +36,8 @@ public class DisplayEventsCommand extends Command {
         result = system.displayEvents(system.findEventsByHallNumber(hallNumber));
 
         if (result.isEmpty()) {
-            System.out.println("No events in that hall");
-            return;
+            throw new NotFoundException("No events in the hall");
+
         }
 
         System.out.println(result);
